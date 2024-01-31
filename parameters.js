@@ -11,12 +11,13 @@ const parameters = {
       type: "input",
       name: "provider",
       message: "Enter the URL of web3 provider",
-      default: "http://localhost:8545"
+      default: "https://1rpc.io/arb"
     },
     {
       type: "input",
       name: "contractAddress",
-      message: "Enter your contract address"
+      message: "Enter your contract address",
+      default: "0xF13a92cd15FC4ed9DE60C5BF5468606dFA688b89"
     },
     {
       type: "input",
@@ -34,13 +35,13 @@ const parameters = {
       type: "input",
       name: "blocksPerBatch",
       message: "Blocks per batch",
-      default: 2500
+      default: 100000
     },
     {
       type: "input",
       name: "delay",
       message: "Delay per iteration (ms)",
-      default: 0
+      default: 1000
     },
     {
       type: "input",
