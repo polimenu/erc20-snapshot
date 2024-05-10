@@ -1,6 +1,6 @@
 {
   "name": "erc20-snapshot-module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "polimenu",
   "keywords": [
     "ethereum",
@@ -15,6 +15,7 @@
     "ethers": "^6.12.1",
     "fs": "^0.0.1-security",
     "inquirer": "^6.3.1",
-    "linq": "^3.2.0"
+    "linq": "^3.2.0",
+    "path": "^0.12.7"
   }
 }
