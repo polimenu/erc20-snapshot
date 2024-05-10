@@ -21,10 +21,10 @@ const getMinimal = pastEvents => {
   });
 };
 
-module.exports.getEvents = async symbol => {
-  const directory = Parameters.eventsDownloadFolder.replace(/{token}/g, symbol);
+module.exports.getEvents = async contractAddress => {
+  const directory = Parameters.eventsDownloadFolder.replace(/{token}/g, contractAddress);
   var files = await readdirAsync(directory);
-  files.sort((a,b) => {
+  files.sort((a, b) => {
     return parseInt(a.split(".")[0]) - parseInt(b.split(".")[0]);
   });
   let events = [];

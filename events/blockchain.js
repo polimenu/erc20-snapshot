@@ -4,8 +4,6 @@ const Web3 = require("web3");
 
 const BlockByBlock = require("./block-by-block");
 const BlockReader = require("./block-reader");
-const Config = require("../config").getConfig();
-const Contract = require("../contract").getContract();
 const FileHelper = require("../file-helper");
 const LastDownloadedBlock = require("./last-downloaded-block");
 const Parameters = require("../parameters").get();
@@ -14,7 +12,6 @@ const { promisify } = require("util");
 
 const sleep = promisify(setTimeout);
 
-const web3 = new Web3(new Web3.providers.HttpProvider((Config || {}).provider || "http://localhost:8545"));
 
 const groupBy = (objectArray, property) => {
   return objectArray.reduce((acc, obj) => {
@@ -27,9 +24,9 @@ const groupBy = (objectArray, property) => {
   }, {});
 };
 
-const tryGetEvents = async (start, end, symbol) => {
+const tryGetEvents = async (contract, start, end, contractAddress) => {
   try {
-    const pastEvents = await Contract.getPastEvents("Transfer", { fromBlock: start, toBlock: end });
+    const pastEvents = await contract.getPastEvents("Transfer", { fromBlock: start, toBlock: end });
 
     if (pastEvents.length) {
       console.info("Successfully imported ", pastEvents.length, " events");
@@ -42,28 +39,30 @@ const tryGetEvents = async (start, end, symbol) => {
         const blockNumber = key;
         const data = group[key];
 
-        const file = Parameters.eventsDownloadFilePath.replace(/{token}/g, symbol).replace(/{blockNumber}/g, blockNumber);
+        const file = Parameters.eventsDownloadFilePath.replace(/{token}/g, contractAddress).replace(/{blockNumber}/g, blockNumber);
 
         FileHelper.writeFile(file, data);
       }
     }
   } catch (e) {
     console.log("Could not get events due to an error. Now checking block by block.", e);
-    await BlockByBlock.tryBlockByBlock(Contract, start, end, symbol);
+    await BlockByBlock.tryBlockByBlock(contract, start, end, contractAddress);
   }
 };
 
-module.exports.get = async () => {
-  const name = await Contract.methods.name().call();
-  const symbol = await Contract.methods.symbol().call();
-  const decimals = await Contract.methods.decimals().call();
+module.exports.get = async (config) => {
+  const web3 = new Web3(new Web3.providers.HttpProvider((config || {}).provider || "http://localhost:8545"));
+  const contract = web3.eth.Contract(Parameters.abi, config.contractAddress)
+  const name = await contract.methods.name().call();
+  const symbol = await contract.methods.symbol().call();
+  const decimals = await contract.methods.decimals().call();
   const blockHeight = await web3.eth.getBlockNumber();
-  var fromBlock = parseInt(Config.fromBlock) || 0;
-  const blocksPerBatch = parseInt(Config.blocksPerBatch) || 0;
-  const delay = parseInt(Config.delay) || 0;
+  var fromBlock = parseInt(config.fromBlock) || 0;
+  const blocksPerBatch = parseInt(config.blocksPerBatch) || 0;
+  const delay = parseInt(config.delay) || 0;
   const toBlock = blockHeight;
 
-  const lastDownloadedBlock = await LastDownloadedBlock.get(symbol);
+  const lastDownloadedBlock = await LastDownloadedBlock.get(config.contractAddress);
 
   if (lastDownloadedBlock) {
     console.log("Resuming from the last downloaded block #", lastDownloadedBlock);
@@ -85,7 +84,7 @@ module.exports.get = async () => {
 
     console.log("Batch", i + 1, " From", start, "to", end);
 
-    await tryGetEvents(start, end, symbol);
+    await tryGetEvents(contract, start, end, config.contractAddress);
 
     start = end + 1;
     end = start + blocksPerBatch;
@@ -95,7 +94,7 @@ module.exports.get = async () => {
     }
   }
 
-  const events = await BlockReader.getEvents(symbol);
+  const events = await BlockReader.getEvents(config.contractAddress);
 
   const data = {
     name,

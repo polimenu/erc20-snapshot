@@ -9,7 +9,7 @@ const range = (start, end) => {
     .map((_, idx) => start + idx);
 };
 
-module.exports.tryBlockByBlock = async (contract, start, end, symbol) => {
+module.exports.tryBlockByBlock = async (contract, start, end, contractAddress) => {
   const blocks = range(start, end);
 
   let counter = 0;
@@ -22,7 +22,7 @@ module.exports.tryBlockByBlock = async (contract, start, end, symbol) => {
     if (pastEvents.length) {
       console.info("Successfully imported ", pastEvents.length, " events");
 
-      const file = Parameters.eventsDownloadFilePath.replace(/{token}/g, symbol).replace(/{blockNumber}/g, pastEvents[0].blockNumber);
+      const file = Parameters.eventsDownloadFilePath.replace(/{token}/g, contractAddress).replace(/{blockNumber}/g, pastEvents[0].blockNumber);
       FileHelper.writeFile(file, pastEvents);
     }
   }

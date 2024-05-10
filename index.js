@@ -2,26 +2,27 @@
 "use strict";
 
 const Balances = require("./balances");
-const Config = require("./config");
 const Events = require("./events/blockchain");
-const Export = require("./export");
+//const Export = require("./export");
+/*config params
+{
+  provider,
+  contractAddress,
+  fromBlock,
+  toBlock,
+  blocksPerBatch,
+  delay,
+  checkIfContract
+}
+*/
 
-const start = async () => {
-  await Config.checkConfig();
-  const format = Config.getConfig().format;
-  const result = await Events.get();
+module.exports.getSnapshot = async (config) => {
+  const format = "json";
+  const result = await Events.get(config);
 
   console.log("Calculating balances of %s (%s)", result.name, result.symbol);
-  const balances = await Balances.createBalances(result);
+  return Balances.createBalances(result);
 
-  console.log("Exporting balances");
-  await Export.exportBalances(result.symbol, balances, format);
+  //console.log("Exporting balances");
+  //await Export.exportBalances(result.symbol, balances, format);
 };
-
-(async () => {
-  try {
-    await start();
-  } catch (e) {
-    console.error(e);
-  }
-})();

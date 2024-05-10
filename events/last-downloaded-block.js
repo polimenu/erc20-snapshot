@@ -10,8 +10,8 @@ const { promisify } = require("util");
 const readdirAsync = promisify(fs.readdir);
 const folderExistsAsync = promisify(fs.exists);
 
-module.exports.get = async symbol => {
-  const downloadFolder = Parameters.eventsDownloadFolder.replace("{token}", symbol);
+module.exports.get = async contractAddress => {
+  const downloadFolder = Parameters.eventsDownloadFolder.replace("{token}", contractAddress);
 
   if (!(await folderExistsAsync(downloadFolder))) {
     return 0;

@@ -1,4 +1,4 @@
-"use strict";
+/*"use strict";
 const path = require("path");
 const FileHelper = require("./file-helper");
 const Parameters = require("./parameters").get();
@@ -34,3 +34,4 @@ module.exports.exportBalances = async (symbol, balances, format) => {
   await FileHelper.writeFile(Parameters.outputFileNameJSON.replace(/{token}/g, symbol), withType);
   console.log("JSON export done!");
 };
+*/
