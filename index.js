@@ -16,13 +16,21 @@ const Events = require("./events/blockchain");
 }
 */
 
-module.exports.getSnapshot = async (config) => {
-  const format = "json";
+module.exports.getERC20Holders = async (config) => {
+
   const result = await Events.get(config);
 
   console.log("Calculating balances of %s (%s)", result.name, result.symbol);
   return Balances.createBalances(result);
 
-  //console.log("Exporting balances");
-  //await Export.exportBalances(result.symbol, balances, format);
+};
+
+
+module.exports.getERC1555Holders = async (config) => {
+
+  const result = await Events.getERC1155(config);
+
+  console.log("Calculating balances of %s (%s)", result.name, result.symbol);
+  return Balances.createBalances(result);
+
 };

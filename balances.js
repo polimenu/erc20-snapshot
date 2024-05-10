@@ -49,7 +49,7 @@ module.exports.createBalances = async data => {
   }
 
   return enumerable
-    .from(closingBalances)
+    .from(closingBalances.filter(b => b.balance > 0))
     .orderByDescending(x => parseFloat(x.balance))
     .toArray();
 };

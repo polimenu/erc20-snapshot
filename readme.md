@@ -1,6 +1,8 @@
 # Token Snapshot: Create ERC20 Token Snapshot
 
-This command-line utility creates a snapshot of any ERC20 token in JSON or CSV format. Use your own fully synced Ethereum node or any _Ethereum node as a service_ like Infura.
+This command-line utility creates a snapshot of any ERC20 token and returns ist as an object. 
+Fork from erc20-snapshot, which exports it as a file.
+Use your own fully synced Ethereum node or any _Ethereum node as a service_ like Infura.
 
 - Works without a local Ethereum node.
 - Automatically resumes the next time upon failure.
@@ -9,28 +11,25 @@ This command-line utility creates a snapshot of any ERC20 token in JSON or CSV f
 ## Getting Started
 
 ```
-npm install erc20-snapshot -g
+yarn add erc20-snapshot-module
 ```
-
-### CLI Arguments
-
-None. Prompts for user input and produces a configuration file on the first run.
 
 ### How to Use Token Snapshot?
 
-Navigate to a directory where you'd like to save the token snapshot to.
-
+Call it via:
 ```
-cd path/to/a/directory
+getSnapshot({
+  provider,
+  contractAddress,
+  fromBlock,
+  toBlock,
+  blocksPerBatch,
+  delay,
+  checkIfContract
+})
 ```
 
-Run the program:
-
-```
-erc20-snapshot
-```
-
-## Configuration File / Prompt Parameters
+## Configuration Parameters
 
 ```json
 {

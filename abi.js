@@ -1,5 +1,7 @@
 "use strict";
 
+const { readFileSync } = require("fs");
+
 const abi = [
   {
     constant: true,
@@ -89,3 +91,7 @@ const abi = [
 module.exports.getABI = () => {
   return abi;
 };
+
+module.exports.getERC1155ABI = () => {
+  return JSON.parse(readFileSync('ERC1155Abi.json').toString());;
+}

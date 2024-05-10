@@ -17,7 +17,8 @@ module.exports.tryBlockByBlock = async (contract, start, end, contractAddress) =
     counter++;
     console.log("%d% Block %d of %d", Math.floor((counter / (end - start)) * 100), i, end);
 
-    const pastEvents = await contract.getPastEvents("Transfer", { fromBlock: i, toBlock: i });
+    const pastEvents = await contract.filters.Transfer();
+    //await contract.getPastEvents("Transfer", { fromBlock: i, toBlock: i });
 
     if (pastEvents.length) {
       console.info("Successfully imported ", pastEvents.length, " events");

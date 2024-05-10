@@ -17,6 +17,8 @@ module.exports.get = async contractAddress => {
     return 0;
   }
   const files = await readdirAsync(downloadFolder);
+  if (files.length == 0)
+    return 0;
 
   return enumerable
     .from(files)

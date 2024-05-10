@@ -10,16 +10,6 @@ const Parameters = require("../parameters").get();
 const readdirAsync = promisify(fs.readdir);
 const readFileAsync = promisify(fs.readFile);
 
-const getMinimal = pastEvents => {
-  return pastEvents.map(tx => {
-    return {
-      transactionHash: tx.transactionHash,
-      from: tx.returnValues["0"],
-      to: tx.returnValues["1"],
-      value: tx.returnValues["2"]._hex
-    };
-  });
-};
 
 module.exports.getEvents = async contractAddress => {
   const directory = Parameters.eventsDownloadFolder.replace(/{token}/g, contractAddress);
@@ -36,7 +26,7 @@ module.exports.getEvents = async contractAddress => {
 
     const contents = await readFileAsync(path.join(directory, file));
     const parsed = JSON.parse(contents.toString());
-    events = events.concat(getMinimal(parsed));
+    events = events.concat(parsed);
   }
 
   return events;
