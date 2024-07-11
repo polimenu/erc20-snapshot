@@ -6,10 +6,10 @@ const INIT_BLOCK = 84855604;
 const test = async () => {
     /*const snapshot = await getERC20Holders({
         provider: RPC,
-        contractAddress: "0x2eE1Fc67bEC816F3DAe2d2c9409483BEf49F181B",
+        contractAddress: "0x7AFdD87FbA836c7862aD7b90bCF50440bF878A3c",
         fromBlock: INIT_BLOCK,
-        toBlock: "latest",
-        blocksPerBatch: 2500000,
+        toBlock: 229342250,
+        blocksPerBatch: 5000,
         delay: 0,
         checkIfContract: false
     })*/
@@ -21,7 +21,7 @@ const test = async () => {
         id: 1,
         fromBlock: INIT_BLOCK,
         toBlock: "latest",
-        blocksPerBatch: 2500000,
+        blocksPerBatch: 250000,
         delay: 0,
         checkIfContract: false
     })

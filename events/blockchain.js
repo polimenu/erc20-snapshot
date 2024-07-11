@@ -79,8 +79,12 @@ module.exports.get = async (config) => {
   let end = fromBlock + blocksPerBatch;
   let i = 0;
 
-  while (end < toBlock) {
+  while (start < toBlock) {
     i++;
+
+    if (end > toBlock) {
+      end = toBlock;
+    }
 
     if (delay) {
       await sleep(delay);
@@ -93,9 +97,6 @@ module.exports.get = async (config) => {
     start = end + 1;
     end = start + blocksPerBatch;
 
-    if (end > toBlock) {
-      end = toBlock;
-    }
   }
 
   const events = await BlockReader.getEvents(config.contractAddress);
@@ -140,8 +141,12 @@ module.exports.getERC1155 = async (config) => {
   let end = fromBlock + blocksPerBatch;
   let i = 0;
 
-  while (end < toBlock) {
+  while (start < toBlock) {
     i++;
+
+    if (end > toBlock) {
+      end = toBlock;
+    }
 
     if (delay) {
       await sleep(delay);
@@ -154,9 +159,6 @@ module.exports.getERC1155 = async (config) => {
     start = end + 1;
     end = start + blocksPerBatch;
 
-    if (end > toBlock) {
-      end = toBlock;
-    }
   }
 
   const events = await BlockReader.getEvents(config.contractAddress + "#" + id.toString());
