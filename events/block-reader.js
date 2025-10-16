@@ -19,10 +19,10 @@ module.exports.getEvents = async contractAddress => {
   });
   let events = [];
 
-  console.log("Parsing files.");
+  //console.log("Parsing files.");
 
   for await (const file of files) {
-    console.log("Parsing ", file);
+    //console.log("Parsing ", file);
 
     const contents = await readFileAsync(path.join(directory, file));
     const parsed = JSON.parse(contents.toString());
